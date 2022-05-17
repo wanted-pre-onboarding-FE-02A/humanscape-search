@@ -18,6 +18,28 @@ const Humanscape = () => {
   const handleSetText = (e: ChangeEvent<HTMLInputElement>) => {
     const newText = e.currentTarget.value
     setText(newText)
+    if (text.length) {
+      setLoad(true)
+      getDiseaseInfoApi({
+        pageNo: 1,
+        numOfRows: 10,
+        sickType: 1,
+        medTp: 2,
+        diseaseType: 'SICK_NM',
+        searchText: text,
+        _type: 'json',
+      })
+        .then((res) => {
+          if (res.data.response.body.totalCount > 0) {
+            const newData = res.data.response.body.items.item
+            setItems(newData)
+          } else setItems([])
+        })
+        .catch(() => {
+          setItems([])
+        })
+        .finally(() => setLoad(false))
+    }
   }
   const handleSubmitText = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -34,10 +56,13 @@ const Humanscape = () => {
         _type: 'json',
       })
         .then((res) => {
-          if (res.statusText === 'OK') {
+          if (res.data.response.body.totalCount > 0) {
             const newData = res.data.response.body.items.item
             setItems(newData)
           } else setItems([])
+        })
+        .catch(() => {
+          setItems([])
         })
         .finally(() => setLoad(false))
     }
@@ -67,12 +92,12 @@ const Humanscape = () => {
         <section>
           <div className={styles.resultBox}>
             <ul>
-              {load === true && (
+              {load && (
                 <li>
                   <div className={styles.loading}>검색중.......</div>
                 </li>
               )}
-              {items?.map((item) => (
+              {items.map((item) => (
                 <ItemCard key={item.sickCd} item={item} />
               ))}
             </ul>
