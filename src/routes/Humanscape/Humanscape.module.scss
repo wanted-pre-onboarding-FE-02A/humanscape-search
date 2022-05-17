@@ -3,10 +3,11 @@
 @use '/src/styles/mixins/flexbox';
 @use '/src/styles/mixins/position';
 
-.humanscapce {
+.humanscape {
   position: relative;
   width: 100vmax;
   height: 100vh;
+  min-height: calc(100vh - 120px);
   background-color: colors.$HUMANS_BG;
 
   .title {
@@ -14,11 +15,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 25px;
-    font-weight: bolder;
-    
+    padding-top: 80px;
+    margin-bottom: 20px;
+
     h1 {
-      padding: 10px 0 10px 0;
+      font-size: 2.125rem;
+      font-weight: 700;
+      line-height: 1.6;
+      letter-spacing: -0.018em;
     }
   }
 
@@ -30,77 +34,108 @@
   .searchBox {
     display: flex;
     align-items: center;
-    width: 600px;
-    height: 60px;
+    width: 660px;
+    height: 65px;
+    padding: 20px 0 20px 24px;
     overflow: hidden;
     background-color: colors.$WHITE;
-    border-radius: 30px;
-    padding: 0 0 0 15px;
+    border-radius: 42px;
 
     svg {
-      width: 30px;
-      height: 30px;
+      width: 20px;
+      height: 20px;
+      padding-top: 2px;
+      margin-right: 15px;
     }
 
     input {
       width: 100%;
       font-size: 18px;
-      font-weight: 600;
-      padding: 10px;
-      &::placeholder{
-        color:colors.$GRAYD;
+      letter-spacing: 0.7px;
+
+      &::placeholder {
+        color: colors.$HUMANS_GRAYB;
       }
     }
 
     .submitButton {
-      @include flexbox.flexbox(center,center);
+      @include flexbox.flexbox(center, center);
       width: 100px;
-      height: 60px;
+      height: 65px;
       font-size: 18px;
-      color: colors.$WHITE;
       font-weight: 700;
+      color: colors.$WHITE;
+      letter-spacing: 0.8px;
       background-color: colors.$BLUE;
     }
-
   }
 
   .resultBox {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    overflow: hidden;
-    width: 600px;
-    min-height: 40px;
+    width: 660px;
     max-height: auto;
+    padding: 24px 0 16px;
+    margin: 8px 0 0;
+    overflow: hidden;
     background-color: colors.$WHITE;
     border-radius: 20px;
-    padding: 10px 0 10px 0;
-    margin: 10px 0 0 0 ;
+
+    .label {
+      padding: 0 24px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: colors.$HUMANS_GRAYA;
+      letter-spacing: -0.018em;
+    }
+
+    li {
+      line-height: 0;
+    }
+
+    // li:last-of-type {
+    //   margin-bottom: 14px;
+    // }
+
+    input[type='radio']:checked + .itemCard {
+      background-color: colors.$GRAYE;
+    }
 
     .itemCard {
-      user-select:none;
       display: flex;
       align-items: center;
-      width: 600px;
-      height: 30px;
-      background-color: colors.$WHITE;
+      width: 660px;
+      height: 45px;
+      padding: 0 20px;
       font-size: 16px;
-      padding: 20px;
+      line-height: 45px;
+      user-select: none;
+      background-color: colors.$WHITE;
 
       &:hover {
         background-color: colors.$GRAYE;
       }
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      p {
+        margin-left: 12px;
+      }
     }
-    
+
     .loading {
-     user-select:none;
       display: flex;
       align-items: center;
       width: 600px;
       height: 30px;
-      background-color: colors.$WHITE;
+      padding: 20px;
       font-size: 16px;
-      padding: 20px; 
+      user-select: none;
+      background-color: colors.$WHITE;
     }
   }
 }

@@ -15,6 +15,28 @@ const Humanscape = () => {
   const [text, setText] = useState<string>('')
   const [items, setItems] = useState<IData[]>([])
   const [load, setLoad] = useState<boolean>(false)
+
+  // KeyControl
+  const [focusedIdx, setFocusedIdx] = useState<number>(-1)
+  const handleKeyControl = (e: React.KeyboardEvent) => {
+    switch (e.key) {
+      case 'ArrowDown':
+        if (focusedIdx >= items.length - 1) {
+          setFocusedIdx(0)
+          return
+        }
+        setFocusedIdx((prev) => prev + 1)
+        break
+      case 'ArrowUp':
+        if (focusedIdx <= 0) {
+          setFocusedIdx(items.length - 1)
+          return
+        }
+        setFocusedIdx((prev) => prev - 1)
+        break
+    }
+  }
+
   const handleSetText = (e: ChangeEvent<HTMLInputElement>) => {
     const newText = e.currentTarget.value
     setText(newText)
@@ -26,7 +48,7 @@ const Humanscape = () => {
     if (text.length) {
       getDiseaseInfoApi({
         pageNo: 1,
-        numOfRows: 10,
+        numOfRows: 7,
         sickType: 1,
         medTp: 2,
         diseaseType: 'SICK_NM',
@@ -42,8 +64,9 @@ const Humanscape = () => {
         .finally(() => setLoad(false))
     }
   }
+
   return (
-    <div className={styles.humanscapce}>
+    <div className={styles.humanscape}>
       <header>
         <div className={styles.title}>
           <h1>국내 모든 임상시험 검색하고</h1>
@@ -55,10 +78,16 @@ const Humanscape = () => {
           <form onSubmit={handleSubmitText}>
             <div className={styles.searchBox}>
               <SearchIcon />
-              <input type='text' value={text} placeholder='질환명을 입력해 주세요.' onChange={handleSetText} />
+              <input
+                type='text'
+                placeholder='질환명을 입력해 주세요.'
+                onChange={handleSetText}
+                value={text}
+                onKeyDown={handleKeyControl}
+              />
               <div className={styles.submitBox}>
                 <button type='submit' className={styles.submitButton}>
-                  검 색
+                  검색
                 </button>
               </div>
             </div>
@@ -72,8 +101,16 @@ const Humanscape = () => {
                   <div className={styles.loading}>검색중.......</div>
                 </li>
               )}
-              {items?.map((item) => (
-                <ItemCard key={item.sickCd} item={item} />
+              {items.length > 0 && <p className={styles.label}>추천검색어</p>}
+              {items?.map((item, index) => (
+                <ItemCard
+                  key={item.sickCd}
+                  item={item}
+                  index={index}
+                  focusedIdx={focusedIdx}
+                  setText={setText}
+                  setFocusedIdx={setFocusedIdx}
+                />
               ))}
             </ul>
           </div>

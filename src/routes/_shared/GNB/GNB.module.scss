@@ -5,34 +5,37 @@
   position: relative;
   display: flex;
   justify-content: center;
-  padding: 24px 0;
+  width: 1040px;
+  height: 56px;
+  margin: 0 auto;
   border-bottom: 1px solid colors.$GRAYE;
 
   ul {
+    @include position.absolute(50% auto auto 20px);
     display: flex;
-  }
+    align-items: center;
+    width: 100%;
+    font-size: 20px;
+    font-weight: 600;
+    color: colors.$HUMANS_LOGO;
+    transform: translateY(-50%);
 
-  li {
-    + li {
-      margin-left: 14px;
-    }
-  }
-
-  a {
-    padding: 4px 14px;
-    color: colors.$GRAY2;
-
-    &.isActive {
-      font-weight: 600;
+    svg {
+      width: 23px;
+      height: 23px;
+      margin-right: 10px;
     }
   }
 
   .rightWing {
-    @include position.absolute(50% 24px auto auto);
+    @include position.absolute(50% 20px auto auto);
     transform: translateY(-50%);
 
     button {
-      margin-left: 14px;
+      padding: 0 16px;
+      margin-left: 20px;
+      font-size: 16px;
+      color: colors.$HUMANS_BLACK;
     }
   }
 }
