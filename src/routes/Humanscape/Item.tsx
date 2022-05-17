@@ -10,10 +10,10 @@ interface IData {
 
 interface ItemCardProps {
   item: IData
-  setText: (_: string) => void
   index: number
   focusedIdx: number
-  setFocusedIdx: (_: number) => void
+  setText: (text: string) => void
+  setFocusedIdx: (focusedIdx: number) => void
 }
 
 const ItemCard = ({ item, setText, index, setFocusedIdx, focusedIdx }: ItemCardProps) => {
