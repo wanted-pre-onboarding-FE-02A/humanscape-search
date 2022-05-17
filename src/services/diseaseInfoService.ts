@@ -15,27 +15,46 @@ export interface Params {
   _type: string
 }
 
-export const getDiseaseInfoApi = (params: Params) =>
-  axios.get<IDiseaseInfoAPIRes>(`${DISEASEINFO_BASE_URL}?serviceKey=${process.env.REACT_APP_API_KEY}`, { params })
-
-export const useGetApi = (params: Params) => {
-  const [result, setResult] = useState<Item[]>([])
-  const [loading, setLoad] = useState<boolean>(false)
+export const getDiseaseInfoApi = async (params: Params) => {
   try {
-    setLoad(true)
-    getDiseaseInfoApi(params).then((res) => {
-      if (res.data.response.body.totalCount === 0) setResult(result)
-      if (res.data.response.body.totalCount === 1)
-        setResult((prev) => {
-          return prev.concat(res.data.response.body.items.item)
-        })
-      if (res.data.response.body.totalCount > 1) setResult(result)
-    })
-  } catch (error) {
-    setResult([])
-  } finally {
-    setLoad(false)
-  }
+    const res = await axios.get<IDiseaseInfoAPIRes>(
+      `${DISEASEINFO_BASE_URL}?serviceKey=${process.env.REACT_APP_API_KEY}`,
+      { params }
+    )
+    const data = res.data.response.body.items.item
+    const { totalCount } = res.data.response.body
+    if (totalCount === 0) {
+      return []
+    }
+    if (totalCount === 1) {
+      const emptyData: Item[] = []
+      return emptyData.concat(data)
+    }
 
-  return [result, loading]
+    return data
+  } catch (error) {
+    throw new Error('server Error')
+  }
 }
+
+// export const useGetApi = (params: Params) => {
+//   const [result, setResult] = useState<Item[]>([])
+//   const [loading, setLoad] = useState<boolean>(false)
+//   try {
+//     setLoad(true)
+//     getDiseaseInfoApi(params).then((res) => {
+//       if (res.data.response.body.totalCount === 0) setResult(result)
+//       if (res.data.response.body.totalCount === 1)
+//         setResult((prev) => {
+//           return prev.concat(res.data.response.body.items.item)
+//         })
+//       if (res.data.response.body.totalCount > 1) setResult(result)
+//     })
+//   } catch (error) {
+//     setResult([])
+//   } finally {
+//     setLoad(false)
+//   }
+
+//   return [result, loading]
+// }

@@ -6,6 +6,7 @@ import { getDiseaseInfoApi } from 'services/diseaseInfoService'
 
 import ItemCard from './Item'
 import { Item } from 'types/diseaseInfo'
+import { useQuery } from 'react-query'
 
 const Humanscape = () => {
   const [text, setText] = useState<string>('')
@@ -13,45 +14,61 @@ const Humanscape = () => {
   const [items, setItems] = useState<Item[]>([])
   const [timer, setTimer] = useState<NodeJS.Timeout>()
 
-  const handleSetText = async (e: ChangeEvent<HTMLInputElement>) => {
+  const pattern = /^[가-힣a-zA-Z0-9]+$/
+
+  const getApi = async () => {
+    const res = await getDiseaseInfoApi({
+      pageNo: 1,
+      numOfRows: 7,
+      sickType: 1,
+      medTp: 2,
+      diseaseType: 'SICK_NM',
+      searchText: text,
+      _type: 'json',
+    })
+    return res
+  }
+
+  const { isLoading, isError, data, error, refetch } = useQuery(['text', text], () => getApi, {
+    enabled: !!text,
+    refetchOnWindowFocus: false,
+    retry: 0,
+    onSuccess: (item: Item[]) => {
+      setItems(item)
+      console.log('success')
+    },
+    onError: (e: any) => {
+      console.log(e)
+      throw new Error('server error')
+    },
+  })
+
+  // if (isLoading) {
+  //   return <span>Loading...</span>
+  // }
+
+  // if (isError) {
+  //   return <span>Error: {error.message}</span>
+  // }
+
+  const handleDebounce = (e: ChangeEvent<HTMLInputElement>) => {
     const newText = e.currentTarget.value
-    setLoad(true)
     setText(newText)
+
     if (timer) {
       clearTimeout(timer)
     }
+
     const newTimer = setTimeout(() => {
-      try {
-        setItems([])
-        getApi(newText)
-      } catch (error) {
-        setItems([])
+      if (pattern.test(newText) || text.length !== 0) {
+        console.log('yes')
+        refetch()
+      } else {
+        console.log('no')
       }
     }, 1000)
+
     setTimer(newTimer)
-    setLoad(false)
-  }
-  const getApi = (inputText: string) => {
-    try {
-      getDiseaseInfoApi({
-        pageNo: 1,
-        numOfRows: 10,
-        sickType: 1,
-        medTp: 2,
-        diseaseType: 'SICK_NM',
-        searchText: inputText,
-        _type: 'json',
-      }).then((res) => {
-        if (res.data.response.body.totalCount === 0) setItems([])
-        if (res.data.response.body.totalCount === 1)
-          setItems((prev) => {
-            return prev.concat(res.data.response.body.items.item)
-          })
-        if (res.data.response.body.totalCount > 1) setItems(res.data.response.body.items.item)
-      })
-    } catch (error) {
-      console.log(error)
-    }
   }
 
   return (
@@ -67,7 +84,7 @@ const Humanscape = () => {
           <form>
             <div className={styles.searchBox}>
               <SearchIcon />
-              <input type='text' value={text} placeholder='질환명을 입력해 주세요.' onChange={handleSetText} />
+              <input type='text' value={text} placeholder='질환명을 입력해 주세요.' onChange={handleDebounce} />
               <div className={styles.submitBox}>
                 <button type='submit' className={styles.submitButton}>
                   검 색
@@ -84,12 +101,11 @@ const Humanscape = () => {
                   <div className={styles.loading}>검색중.......</div>
                 </li>
               )}
-              {items.map((item) => (
-                <ItemCard key={item.sickCd} item={item} />
-              ))}
-              {items.length === 0 && (
+              {data && data.length !== undefined ? (
+                data.map((item) => <ItemCard key={item.sickCd} item={item} />)
+              ) : (
                 <li>
-                  <div className={styles.loading}>검색결과를 찾지 못했습니다.</div>
+                  <div>검색결과를 찾지 못했습니다.</div>
                 </li>
               )}
             </ul>
