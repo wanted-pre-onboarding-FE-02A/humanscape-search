@@ -1,84 +1,59 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 import { SearchIcon } from 'assets/svgs'
 import styles from './Humanscape.module.scss'
 import { getDiseaseInfoApi } from 'services/diseaseInfoService'
 
 import ItemCard from './Item'
-
-interface IData {
-  sickCd: string
-  sickNm: string
-}
+import { Item } from 'types/diseaseInfo'
 
 const Humanscape = () => {
   const [text, setText] = useState<string>('')
-  const [items, setItems] = useState<IData[]>([])
   const [load, setLoad] = useState<boolean>(false)
-  const handleSetText = (e: ChangeEvent<HTMLInputElement>) => {
+  const [items, setItems] = useState<Item[]>([])
+  const [timer, setTimer] = useState<NodeJS.Timeout>()
+
+  const handleSetText = async (e: ChangeEvent<HTMLInputElement>) => {
     const newText = e.currentTarget.value
-    setText(newText)
-    if (newText.length) {
-      setLoad(true)
-      getDiseaseInfoApi({
-        pageNo: 1,
-        numOfRows: 10,
-        sickType: 1,
-        medTp: 2,
-        diseaseType: 'SICK_NM',
-        searchText: text,
-        _type: 'json',
-      })
-        .then((res) => {
-          if (res.data.response.body.totalCount > 1) {
-            const newData = res.data.response.body.items.item
-            setItems(newData)
-          }
-          if (res.data.response.body.totalCount === 1) {
-            const newData = res.data.response.body.items.item
-            setItems((prev) => {
-              return prev.concat(newData)
-            })
-          } else setItems([])
-        })
-        .catch(() => {
-          setItems([])
-        })
-        .finally(() => setLoad(false))
-    }
-  }
-  const handleSubmitText = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setItems([])
     setLoad(true)
-    if (text.length) {
+    setText(newText)
+    if (timer) {
+      clearTimeout(timer)
+    }
+    const newTimer = setTimeout(() => {
+      try {
+        setItems([])
+        getApi(newText)
+      } catch (error) {
+        setItems([])
+      }
+    }, 1000)
+    setTimer(newTimer)
+    setLoad(false)
+  }
+  const getApi = (inputText: string) => {
+    try {
       getDiseaseInfoApi({
         pageNo: 1,
         numOfRows: 10,
         sickType: 1,
         medTp: 2,
         diseaseType: 'SICK_NM',
-        searchText: text,
+        searchText: inputText,
         _type: 'json',
+      }).then((res) => {
+        if (res.data.response.body.totalCount === 0) setItems([])
+        if (res.data.response.body.totalCount === 1)
+          setItems((prev) => {
+            return prev.concat(res.data.response.body.items.item)
+          })
+        if (res.data.response.body.totalCount > 1) setItems(res.data.response.body.items.item)
       })
-        .then((res) => {
-          if (res.data.response.body.totalCount > 1) {
-            const newData = res.data.response.body.items.item
-            setItems(newData)
-          }
-          if (res.data.response.body.totalCount === 1) {
-            const newData = res.data.response.body.items.item
-            setItems((prev) => {
-              return prev.concat(newData)
-            })
-          } else setItems([])
-        })
-        .catch(() => {
-          setItems([])
-        })
-        .finally(() => setLoad(false))
+    } catch (error) {
+      console.log(error)
     }
   }
+
   return (
     <div className={styles.humanscapce}>
       <header>
@@ -89,7 +64,7 @@ const Humanscape = () => {
       </header>
       <main>
         <section>
-          <form onSubmit={handleSubmitText}>
+          <form>
             <div className={styles.searchBox}>
               <SearchIcon />
               <input type='text' value={text} placeholder='질환명을 입력해 주세요.' onChange={handleSetText} />
@@ -112,6 +87,11 @@ const Humanscape = () => {
               {items.map((item) => (
                 <ItemCard key={item.sickCd} item={item} />
               ))}
+              {items.length === 0 && (
+                <li>
+                  <div className={styles.loading}>검색결과를 찾지 못했습니다.</div>
+                </li>
+              )}
             </ul>
           </div>
         </section>
