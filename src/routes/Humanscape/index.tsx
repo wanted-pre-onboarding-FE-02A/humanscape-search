@@ -18,7 +18,7 @@ const Humanscape = () => {
   const handleSetText = (e: ChangeEvent<HTMLInputElement>) => {
     const newText = e.currentTarget.value
     setText(newText)
-    if (text.length) {
+    if (newText.length) {
       setLoad(true)
       getDiseaseInfoApi({
         pageNo: 1,
@@ -30,9 +30,15 @@ const Humanscape = () => {
         _type: 'json',
       })
         .then((res) => {
-          if (res.data.response.body.totalCount > 0) {
+          if (res.data.response.body.totalCount > 1) {
             const newData = res.data.response.body.items.item
             setItems(newData)
+          }
+          if (res.data.response.body.totalCount === 1) {
+            const newData = res.data.response.body.items.item
+            setItems((prev) => {
+              return prev.concat(newData)
+            })
           } else setItems([])
         })
         .catch(() => {
@@ -56,9 +62,15 @@ const Humanscape = () => {
         _type: 'json',
       })
         .then((res) => {
-          if (res.data.response.body.totalCount > 0) {
+          if (res.data.response.body.totalCount > 1) {
             const newData = res.data.response.body.items.item
             setItems(newData)
+          }
+          if (res.data.response.body.totalCount === 1) {
+            const newData = res.data.response.body.items.item
+            setItems((prev) => {
+              return prev.concat(newData)
+            })
           } else setItems([])
         })
         .catch(() => {
