@@ -23,35 +23,25 @@ const Humanscape = () => {
     const newTimer = setTimeout(() => {
       try {
         setItems([])
-        getApi(newText)
+        console.log('순서1')
+        getDiseaseInfoApi({
+          pageNo: 1,
+          numOfRows: 10,
+          sickType: 1,
+          medTp: 2,
+          diseaseType: 'SICK_NM',
+          searchText: newText,
+          _type: 'json',
+        }).then((res) => {
+          setItems(res)
+        })
       } catch (error) {
         setItems([])
+        console.log('에러 발생')
       }
     }, 1000)
     setTimer(newTimer)
     setLoad(false)
-  }
-  const getApi = (inputText: string) => {
-    try {
-      getDiseaseInfoApi({
-        pageNo: 1,
-        numOfRows: 10,
-        sickType: 1,
-        medTp: 2,
-        diseaseType: 'SICK_NM',
-        searchText: inputText,
-        _type: 'json',
-      }).then((res) => {
-        if (res.data.response.body.totalCount === 0) setItems([])
-        if (res.data.response.body.totalCount === 1)
-          setItems((prev) => {
-            return prev.concat(res.data.response.body.items.item)
-          })
-        if (res.data.response.body.totalCount > 1) setItems(res.data.response.body.items.item)
-      })
-    } catch (error) {
-      console.log(error)
-    }
   }
 
   return (
