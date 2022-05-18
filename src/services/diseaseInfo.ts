@@ -1,7 +1,7 @@
 import { axios } from 'hooks/worker'
 import { IDiseaseInfoAPIRes } from 'types/diseaseInfo'
 
-// proxy : http://apis.data.go.kr
+// proxy: http://apis.data.go.kr
 const DISEASEINFO_BASE_URL = '/B551182/diseaseInfoService/getDissNameCodeList'
 
 interface Params {

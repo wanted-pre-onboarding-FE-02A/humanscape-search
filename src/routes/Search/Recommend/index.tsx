@@ -38,7 +38,7 @@ export default function Recommend({ value }: IProps) {
   return (
     <ul>
       {data.map((item) => (
-        <RecommendItem key={item.sickCd} item={item} />
+        <RecommendItem key={item.sickCd} item={item} value={value} />
       ))}
     </ul>
   )
