@@ -1,6 +1,6 @@
 import styles from './Loading.module.scss'
 import { Suspense } from 'react'
-import Recommend from 'routes/Search/Recommend'
+import Recommend from 'components/Recommend'
 
 interface IProps {
   inputVal: string
@@ -8,13 +8,11 @@ interface IProps {
 
 export default function Loading({ inputVal }: IProps) {
   return (
-    <div>
+    <div className={styles.recommendWrap}>
       {inputVal !== '' && (
-        <div className={styles.recommend}>
-          <Suspense fallback={<div className={styles.loading}>검색 중...</div>}>
-            <Recommend value={inputVal} />
-          </Suspense>
-        </div>
+        <Suspense fallback={<div className={styles.loading}>검색 중...</div>}>
+          <Recommend value={inputVal} />
+        </Suspense>
       )}
     </div>
   )

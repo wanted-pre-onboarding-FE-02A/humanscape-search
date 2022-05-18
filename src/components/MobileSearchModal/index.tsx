@@ -1,13 +1,15 @@
-import Search from 'components/Search'
+import ComponentSearch from 'components/ComponentSearch'
 import styles from './MobileSearchModal.module.scss'
 import { ChangeEvent } from 'react'
+import Loading from 'components/Loading'
 
 interface IProps {
+  inputVal: string
   handleClose: () => void
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function MobileSearchModal({ handleClose, handleChange }: IProps) {
+export default function MobileSearchModal({ inputVal, handleClose, handleChange }: IProps) {
   const handleSubmit = (e: any) => {
     handleClose()
   }
@@ -18,8 +20,9 @@ export default function MobileSearchModal({ handleClose, handleChange }: IProps)
         <button type='button' onClick={handleSubmit}>
           X
         </button>
-        <Search handleChange={handleChange} />
+        <ComponentSearch handleChange={handleChange} />
       </div>
+      <Loading inputVal={inputVal} />
     </div>
   )
 }

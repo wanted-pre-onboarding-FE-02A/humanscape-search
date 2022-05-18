@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, Suspense, useCallback, useEffect, useMemo, useS
 import styles from './Search.module.scss'
 
 import SearchInput from './SearchInput'
-import Recommend from './Recommend'
+import Recommend from 'components/Recommend'
 import Setting from 'components/Setting/indes'
 import _ from 'lodash'
 

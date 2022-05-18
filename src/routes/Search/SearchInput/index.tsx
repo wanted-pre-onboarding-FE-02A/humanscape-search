@@ -2,9 +2,8 @@ import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from 're
 import styles from './SearchInput.module.scss'
 import { SearchIcon } from 'assets/svgs'
 import Modal from 'components/Modal'
-// import MobileSearchModal from 'components/MobileSearchModal'
 import useOnClickOutside from 'hooks/useOnClickOutside'
-import Search from 'components/Search'
+import ComponentSearch from 'components/ComponentSearch'
 import Loading from 'components/Loading'
 import _ from 'lodash'
 import MobileSearchModal from 'components/MobileSearchModal'
@@ -46,14 +45,15 @@ export default function SearchInput({ /* inputVal,  handleChange, */ handleSubmi
           </button>
         </div>
         <div className={styles.searchBox}>
-          <Search handleChange={handleChange} />
+          <ComponentSearch handleChange={handleChange} />
           <button type='submit'>검색</button>
         </div>
       </form>
       <Loading inputVal={inputVal} />
+
       {isMobileModalOpen && (
         <Modal>
-          <MobileSearchModal handleClose={handleClick} handleChange={handleChange} />
+          <MobileSearchModal inputVal={inputVal} handleClose={handleClick} handleChange={handleChange} />
         </Modal>
       )}
     </>

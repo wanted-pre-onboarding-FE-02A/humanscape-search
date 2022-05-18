@@ -2,45 +2,19 @@
 @use '/src/styles/mixins/flexbox';
 @use '/src/styles/mixins/responsive';
 
-.searchBox {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 0 0 0 15px;
-  overflow: hidden;
+.recommendWrap {
+  border-radius: 10px;
   background-color: colors.$WHITE;
-  border-radius: 30px;
+  margin-top: 10px;
+  width: 600px;
 
-  svg {
-    width: 30px;
-    height: 30px;
-  }
-
-  input[type='search'] {
-    width: 100%;
-    padding: 10px;
-    font-size: 18px;
-    font-weight: 600;
-
-    &::placeholder {
-      color: colors.$GRAYD;
-    }
-  }
-
-  button[type='submit'] {
-    @include flexbox.flexbox(center, center);
-    width: 100px;
-    height: 60px;
-    font-size: 18px;
-    font-weight: 700;
-    color: colors.$WHITE;
-    background-color: colors.$BLUE;
+  .loading {
+    padding: 13px;
   }
 }
-
 @include responsive.mobileOnly {
-  .searchBox {
-    display: none;
+  .recommendWrap {
     width: 100%;
+    margin-top: 0;
   }
 }

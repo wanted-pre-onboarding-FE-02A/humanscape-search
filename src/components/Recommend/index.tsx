@@ -4,6 +4,7 @@ import { settingAtom } from 'recoil/diseaseInfo'
 import { getDiseaseInfoApi } from 'services/diseaseInfo'
 import { Item } from 'types/diseaseInfo'
 import RecommendItem from 'components/Recommend/RecommendItem'
+import styles from './Recommend.module.scss'
 
 interface IProps {
   value: string

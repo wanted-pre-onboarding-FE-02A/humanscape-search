@@ -27,6 +27,11 @@ svg {
 }
 
 @include responsive.mobileOnly {
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
   .pcIcon {
     display: none;
   }
