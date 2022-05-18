@@ -8,3 +8,13 @@ export const settingAtom = atom({
     medTp: 2,
   },
 })
+
+export const dataLengthAtom = atom({
+  key: 'dataLength',
+  default: 0,
+})
+
+export const focusedIdxAtom = atom({
+  key: 'focusedIndex',
+  default: -1,
+})

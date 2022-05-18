@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, FormEvent, Suspense, useMemo, useState } from 'react'
 import styles from './Search.module.scss'
 
 import SearchInput from './SearchInput'
@@ -8,7 +8,6 @@ import _ from 'lodash'
 
 export default function Search() {
   const [inputVal, setInputVal] = useState('')
-  const [InputValDebo, setInputValDebo] = useState('')
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget
@@ -19,7 +18,6 @@ export default function Search() {
 
   const handleSubmit = (value: string) => (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('submit', value)
   }
 
   return (
@@ -29,7 +27,7 @@ export default function Search() {
       {inputVal !== '' && (
         <div className={styles.recommend}>
           <Suspense fallback={<div className={styles.loading}>검색 중...</div>}>
-            <Recommend value={inputVal} />
+            <Recommend value={inputVal} setInputVal={setInputVal} />
           </Suspense>
         </div>
       )}
