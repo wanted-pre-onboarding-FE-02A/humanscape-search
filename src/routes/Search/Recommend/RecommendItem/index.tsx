@@ -10,16 +10,15 @@ interface IData {
 
 interface IProps {
   item: IData
-  value: string
 }
 
-export default function RecommendItem({ item, value }: IProps) {
+export default function RecommendItem({ item }: IProps) {
   return (
     <li>
       <div className={styles.itemCard}>
         <SearchIcon />
         {/* <p>{item.sickNm}</p> */}
-        <HighlightedText item={item} highlight={value} />
+        <HighlightedText item={item} />
       </div>
     </li>
   )

@@ -1,8 +1,10 @@
 import { ReactFragment, useCallback, useMemo } from 'react'
+import { useRecoilValue } from 'recoil'
+
+import { inputState } from '../../recoil/inputState'
 
 interface HighlightedTextProps {
   item: IData
-  highlight: string
 }
 
 interface IData {
@@ -10,7 +12,9 @@ interface IData {
   sickNm: string
 }
 
-function HighlightedText({ item, highlight }: HighlightedTextProps) {
+function HighlightedText({ item }: HighlightedTextProps) {
+  const highlight = useRecoilValue(inputState)
+
   const regex = useMemo(() => {
     return new RegExp(`(${highlight})`, 'gi')
   }, [highlight])
