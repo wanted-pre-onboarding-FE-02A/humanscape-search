@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useCallback, useState } from 'react'
 
 import { SearchIcon } from 'assets/svgs'
 import styles from './Humanscape.module.scss'
@@ -6,43 +6,49 @@ import { getDiseaseInfoApi } from 'services/diseaseInfoService'
 
 import ItemCard from './Item'
 import { Item } from 'types/diseaseInfo'
+import { useQuery } from 'react-query'
 
+const pattern = /^[가-힣a-zA-Z0-9]+$/
 const Humanscape = () => {
   const [text, setText] = useState<string>('')
-  const [load, setLoad] = useState<boolean>(false)
-  const [items, setItems] = useState<Item[]>([])
+  // const [items, setItems] = useState<Item[]>([])
   const [timer, setTimer] = useState<NodeJS.Timeout>()
 
-  const handleSetText = async (e: ChangeEvent<HTMLInputElement>) => {
+  const { isLoading, data, isError } = useQuery<Item[]>(['text', text], () => getDiseaseInfoApi(text), {
+    enabled: !!text,
+    refetchOnWindowFocus: false,
+    retry: 0,
+    staleTime: 5 * 60 * 1000,
+    onSuccess: (item: Item[]) => {
+      // setItems(item)
+    },
+    onError: () => {
+      throw new Error('server error')
+    },
+  })
+
+  const onChangeInputText = (e: ChangeEvent<HTMLInputElement>) => {
     const newText = e.currentTarget.value
-    setLoad(true)
-    setText(newText)
+
     if (timer) {
       clearTimeout(timer)
     }
+
     const newTimer = setTimeout(() => {
-      try {
-        setItems([])
-        console.log('순서1')
-        getDiseaseInfoApi({
-          pageNo: 1,
-          numOfRows: 10,
-          sickType: 1,
-          medTp: 2,
-          diseaseType: 'SICK_NM',
-          searchText: newText,
-          _type: 'json',
-        }).then((res) => {
-          setItems(res)
-        })
-      } catch (error) {
-        setItems([])
-        console.log('에러 발생')
+      if (pattern.test(newText) && newText.length !== 0) {
+        setText(newText)
       }
     }, 1000)
     setTimer(newTimer)
-    setLoad(false)
   }
+
+  const LoadingComponent = useCallback(() => {
+    return isLoading ? (
+      <li>
+        <div className={styles.loading}>검색중입니다......</div>
+      </li>
+    ) : null
+  }, [isLoading])
 
   return (
     <div className={styles.humanscapce}>
@@ -54,34 +60,23 @@ const Humanscape = () => {
       </header>
       <main>
         <section>
-          <form>
-            <div className={styles.searchBox}>
-              <SearchIcon />
-              <input type='text' value={text} placeholder='질환명을 입력해 주세요.' onChange={handleSetText} />
-              <div className={styles.submitBox}>
-                <button type='submit' className={styles.submitButton}>
-                  검 색
-                </button>
-              </div>
+          <div className={styles.searchBox}>
+            <SearchIcon />
+            <input type='text' placeholder='질환명을 입력해 주세요.' onChange={onChangeInputText} />
+            <div className={styles.submitBox}>
+              <button type='submit' className={styles.submitButton}>
+                검 색
+              </button>
             </div>
-          </form>
+          </div>
         </section>
         <section>
           <div className={styles.resultBox}>
             <ul>
-              {load && (
-                <li>
-                  <div className={styles.loading}>검색중.......</div>
-                </li>
-              )}
-              {items.map((item) => (
+              {LoadingComponent()}
+              {data?.map((item) => (
                 <ItemCard key={item.sickCd} item={item} />
               ))}
-              {items.length === 0 && (
-                <li>
-                  <div className={styles.loading}>검색결과를 찾지 못했습니다.</div>
-                </li>
-              )}
             </ul>
           </div>
         </section>

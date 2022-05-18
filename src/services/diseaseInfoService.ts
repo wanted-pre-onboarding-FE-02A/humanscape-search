@@ -13,20 +13,33 @@ export interface Params {
   _type: string
 }
 
-export const getDiseaseInfoApi = async (params: Params) => {
+export const getDiseaseInfoApi = async (inputText: string) => {
   try {
     const res = await axios.get<IDiseaseInfoAPIRes>(
       `${DISEASEINFO_BASE_URL}?serviceKey=${process.env.REACT_APP_API_KEY}`,
-      { params }
+      {
+        params: {
+          pageNo: 1,
+          numOfRows: 10,
+          sickType: 1,
+          medTp: 2,
+          diseaseType: 'SICK_NM',
+          searchText: inputText,
+          _type: 'json',
+        },
+      }
     )
-    const { item } = res.data.response.body.items
+    const data = res.data.response.body.items.item
     const { totalCount } = res.data.response.body
-    if (totalCount === 0) return []
+    if (totalCount === 0) {
+      return []
+    }
     if (totalCount === 1) {
       const emptyData: Item[] = []
-      return emptyData.concat(item)
+      return emptyData.concat(data)
     }
-    return item
+
+    return data
   } catch (error) {
     throw new Error('server Error')
   }
