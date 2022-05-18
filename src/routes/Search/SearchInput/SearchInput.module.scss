@@ -1,39 +1,82 @@
 @use '/src/styles/constants/colors';
 @use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
 
-.searchBox {
-  display: flex;
-  align-items: center;
+.form {
   width: 600px;
   height: 60px;
-  padding: 0 0 0 15px;
-  overflow: hidden;
-  background-color: colors.$WHITE;
-  border-radius: 30px;
 
-  svg {
-    width: 30px;
-    height: 30px;
-  }
-
-  input[type='search'] {
+  .searchBox {
+    display: flex;
+    align-items: center;
     width: 100%;
-    padding: 10px;
-    font-size: 18px;
-    font-weight: 600;
+    padding: 0 0 0 15px;
+    overflow: hidden;
+    background-color: colors.$WHITE;
+    border-radius: 30px;
 
-    &::placeholder {
-      color: colors.$GRAYD;
+    svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    input[type='search'] {
+      width: 100%;
+      padding: 10px;
+      font-size: 18px;
+      font-weight: 600;
+
+      &::placeholder {
+        color: colors.$GRAYD;
+      }
+    }
+
+    button[type='submit'] {
+      @include flexbox.flexbox(center, center);
+      width: 100px;
+      height: 60px;
+      font-size: 18px;
+      font-weight: 700;
+      color: colors.$WHITE;
+      background-color: colors.$BLUE;
     }
   }
 
-  button[type='submit'] {
-    @include flexbox.flexbox(center, center);
-    width: 100px;
-    height: 60px;
-    font-size: 18px;
-    font-weight: 700;
-    color: colors.$WHITE;
-    background-color: colors.$BLUE;
+  .mobileSearchBtn {
+    display: none;
+  }
+}
+
+@include responsive.mobileOnly {
+  .form {
+    width: 100%;
+
+    .searchBox {
+      display: none;
+      width: 100%;
+    }
+
+    .mobileSearchBtn {
+      display: block;
+
+      button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 12px 20px;
+        cursor: pointer;
+        background-color: rgb(255, 255, 255);
+        border-radius: 42px;
+        box-shadow: rgba(38, 40, 45, 10%) 0 2px 2px;
+
+        p {
+          font-size: 0.875rem;
+          font-weight: 400;
+          color: rgb(167, 175, 183);
+        }
+      }
+    }
   }
 }

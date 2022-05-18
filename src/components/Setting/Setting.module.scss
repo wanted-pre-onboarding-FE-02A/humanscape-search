@@ -1,3 +1,5 @@
+@use '/src/styles/mixins/responsive';
+
 .btnBox {
   display: flex;
   justify-content: end;
@@ -7,5 +9,11 @@
   .icon {
     width: 30px;
     height: 30px;
+  }
+}
+
+@include responsive.mobileOnly {
+  .btnBox {
+    width: 100%;
   }
 }
