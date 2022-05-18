@@ -22,7 +22,6 @@ export default function Search() {
     console.log('submit', value)
   }
 
-  console.log(inputVal)
   return (
     <>
       <Setting />

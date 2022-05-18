@@ -2,6 +2,7 @@ import { useQuery } from 'react-query'
 import { useRecoilValue } from 'recoil'
 import { settingAtom } from 'recoil/diseaseInfo'
 import { getDiseaseInfoApi } from 'services/diseaseInfo'
+import { Item } from 'types/diseaseInfo'
 import RecommendItem from './RecommendItem'
 
 interface IProps {
@@ -18,7 +19,13 @@ export default function Recommend({ value }: IProps) {
         medTp,
         searchText: value,
       }).then((res) => {
-        if (res.data.response.body.totalCount > 0) return res.data.response.body.items.item
+        if (res.data.response.body.totalCount === 1) {
+          const emptyData: Item[] = []
+          return emptyData.concat(res.data.response.body.items.item)
+        }
+
+        if (res.data.response.body.totalCount > 1) return res.data.response.body.items.item
+
         return []
       }),
     {
