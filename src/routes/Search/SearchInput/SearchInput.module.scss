@@ -1,0 +1,39 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  width: 600px;
+  height: 60px;
+  padding: 0 0 0 15px;
+  overflow: hidden;
+  background-color: colors.$WHITE;
+  border-radius: 30px;
+
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  input[type='search'] {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 600;
+
+    &::placeholder {
+      color: colors.$GRAYD;
+    }
+  }
+
+  button[type='submit'] {
+    @include flexbox.flexbox(center, center);
+    width: 100px;
+    height: 60px;
+    font-size: 18px;
+    font-weight: 700;
+    color: colors.$WHITE;
+    background-color: colors.$BLUE;
+  }
+}
