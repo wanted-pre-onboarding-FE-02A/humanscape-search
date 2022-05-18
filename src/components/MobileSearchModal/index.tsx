@@ -10,7 +10,7 @@ interface IProps {
 }
 
 export default function MobileSearchModal({ inputVal, handleClose, handleChange }: IProps) {
-  const handleSubmit = (e: any) => {
+  const handleSubmit = () => {
     handleClose()
   }
 
@@ -18,7 +18,7 @@ export default function MobileSearchModal({ inputVal, handleClose, handleChange 
     <div className={styles.mobileSearch}>
       <div className={styles.searchWrap}>
         <button type='button' onClick={handleSubmit}>
-          X
+          &larr;
         </button>
         <ComponentSearch handleChange={handleChange} />
       </div>

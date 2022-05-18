@@ -9,9 +9,15 @@
 }
 
 @include responsive.mobileOnly {
-  .searchWrap {
-    @include flexbox.flexbox(between, center);
-    padding: 12px 20px;
-    border-bottom: 2px solid rgb(0, 123, 233);
+  .mobileSearch {
+    .searchWrap {
+      @include flexbox.flexbox(between, center);
+      padding: 12px 20px;
+      border-bottom: 2px solid rgb(0, 123, 233);
+      button {
+        font-size: 20px;
+        font-weight: 700;
+      }
+    }
   }
 }

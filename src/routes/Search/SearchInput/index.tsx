@@ -3,7 +3,7 @@ import styles from './SearchInput.module.scss'
 import { SearchIcon } from 'assets/svgs'
 import Modal from 'components/Modal'
 import useOnClickOutside from 'hooks/useOnClickOutside'
-import ComponentSearch from 'components/ComponentSearch'
+import Search from 'components/ComponentSearch'
 import Loading from 'components/Loading'
 import _ from 'lodash'
 import MobileSearchModal from 'components/MobileSearchModal'
@@ -45,7 +45,7 @@ export default function SearchInput({ /* inputVal,  handleChange, */ handleSubmi
           </button>
         </div>
         <div className={styles.searchBox}>
-          <ComponentSearch handleChange={handleChange} />
+          <Search handleChange={handleChange} />
           <button type='submit'>검색</button>
         </div>
       </form>
