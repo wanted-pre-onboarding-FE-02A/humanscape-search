@@ -13,10 +13,9 @@ interface IData {
 interface IProps {
   item: IData
   index: number
-  setInputVal: (inputVal: string) => void
 }
 
-export default function RecommendItem({ item, index, setInputVal }: IProps) {
+export default function RecommendItem({ item, index }: IProps) {
   const [checked, setChecked] = useState(false)
   const [focusedIdx, setFocusedIdx] = useRecoilState(focusedIdxAtom)
   // const debounceItemTitle = _.debounce(() => {
@@ -31,7 +30,7 @@ export default function RecommendItem({ item, index, setInputVal }: IProps) {
       // setInputVal(item.sickNm)
       // debounceItemTitle()
     } else setChecked(false)
-  }, [focusedIdx, index, setInputVal, item.sickNm, setFocusedIdx])
+  }, [focusedIdx, index, item.sickNm, setFocusedIdx])
 
   // 클릭으로 검색창 반영
   const handleItemChange = (e: ChangeEvent<HTMLInputElement>) => {
