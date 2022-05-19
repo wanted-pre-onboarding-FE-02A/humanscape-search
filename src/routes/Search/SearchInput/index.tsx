@@ -2,7 +2,7 @@ import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } fr
 import styles from './SearchInput.module.scss'
 import { SearchIcon } from 'assets/svgs'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { dataLengthAtom, focusedIdxAtom } from 'recoil/diseaseInfo'
+import { dataLengthAtom, focusedIdxAtom, inputValueAtom } from 'recoil/diseaseInfo'
 import { cx } from 'styles'
 
 interface IProps {
@@ -12,10 +12,11 @@ interface IProps {
 }
 
 export default function SearchInput({ isMoblie, debounceChange, handleClick }: IProps) {
-  const [inputVal, setInputVal] = useState('')
+  // const [inputVal, setInputVal] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const length = useRecoilValue(dataLengthAtom)
   const [focusedIdx, setFocusedIdx] = useRecoilState(focusedIdxAtom)
+  const [inputVal, setInputVal] = useRecoilState(inputValueAtom)
 
   useEffect(() => {
     if (!inputRef.current) return
@@ -61,7 +62,7 @@ export default function SearchInput({ isMoblie, debounceChange, handleClick }: I
             type='search'
             placeholder='질환명을 입력해 주세요.'
             ref={inputRef}
-            // value={inputVal}
+            value={inputVal}
             onChange={handleChange}
             onKeyDown={handleKeyControl}
           />
