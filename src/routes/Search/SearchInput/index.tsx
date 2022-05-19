@@ -1,26 +1,36 @@
-import { ChangeEvent, useEffect, useRef } from 'react'
+import { ChangeEvent } from 'react'
 import styles from './SearchInput.module.scss'
 import { SearchIcon } from 'assets/svgs'
+import Search from 'components/ComponentSearch'
+import Loading from 'components/Loading'
+import { useRecoilValue } from 'recoil'
+import { inputValue } from 'recoil/diseaseInfo'
 
 interface IProps {
+  handleClick: any
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function SearchInput({ handleChange }: IProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
+export default function SearchInput({ handleClick, handleChange }: IProps) {
+  const inputVal = useRecoilValue(inputValue)
 
-  useEffect(() => {
-    if (!inputRef.current) return
-    inputRef.current.focus()
-  }, [])
+  console.log(inputVal)
 
   return (
-    <form className={styles.form}>
-      <div className={styles.searchBox}>
-        <SearchIcon />
-        <input type='search' placeholder='질환명을 입력해 주세요.' ref={inputRef} onChange={handleChange} />
-        <button type='submit'>검색</button>
-      </div>
-    </form>
+    <>
+      <form className={styles.form}>
+        <div className={styles.mobileSearchBtn}>
+          <button type='button' onClick={handleClick}>
+            <p>질환명을 입력해주세요</p>
+            <SearchIcon />
+          </button>
+        </div>
+        <div className={styles.searchBox}>
+          <Search handleChange={handleChange} />
+          <button type='submit'>검색</button>
+        </div>
+      </form>
+      <Loading />
+    </>
   )
 }

@@ -1,33 +1,45 @@
-import { ChangeEvent, Suspense, useMemo, useState } from 'react'
+import { ChangeEvent, Suspense, useMemo, useState, useRef } from 'react'
 import styles from './Search.module.scss'
 
 import SearchInput from './SearchInput'
-import Recommend from './Recommend'
 import Setting from 'components/Setting/indes'
 import _ from 'lodash'
+import { useSetRecoilState } from 'recoil'
+import MobileSearchModal from 'components/MobileSearchModal'
+import Modal from 'components/Modal'
+import useOnClickOutside from 'hooks/useOnClickOutside'
+import { inputValue } from 'recoil/diseaseInfo'
 
 // const pattern = /^[가-힣a-zA-Z0-9]+$/
 // if (pattern.test(value) && value.length !== 0) {
 // }
 export default function Search() {
-  const [inputVal, setInputVal] = useState('')
+  const [isMobileModalOpen, setIsMobileModalOpen] = useState(false)
+  const setInputVal = useSetRecoilState(inputValue)
+  const ref = useRef(null)
+
+  const pattern = /^[가-힣a-zA-Z0-9]+$/
+
+  useOnClickOutside(ref, () => setIsMobileModalOpen(false))
+  const handleClick = () => setIsMobileModalOpen((prev) => !prev)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget
-    debounceSetInput(value)
+    // setInputVal(value)
+    if (pattern.test(value)) {
+      debounceSetInput(value)
+    }
   }
   const debounceSetInput = useMemo(() => _.debounce(setInputVal, 1000), [])
 
   return (
     <>
       <Setting />
-      <SearchInput handleChange={handleChange} />
-      {inputVal !== '' && (
-        <div className={styles.recommend}>
-          <Suspense fallback={<div className={styles.loading}>검색 중...</div>}>
-            <Recommend value={inputVal} />
-          </Suspense>
-        </div>
+      <SearchInput handleClick={handleClick} handleChange={handleChange} />
+      {isMobileModalOpen && (
+        <Modal>
+          <MobileSearchModal handleClick={handleClick} handleChange={handleChange} />
+        </Modal>
       )}
     </>
   )

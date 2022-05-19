@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil'
 import { settingAtom } from 'recoil/diseaseInfo'
 import { getDiseaseInfoApi } from 'services/diseaseInfo.service'
 import { Item } from 'types/diseaseInfo'
-import RecommendItem from './RecommendItem'
+import RecommendItem from 'components/Recommend/RecommendItem'
 
 interface IProps {
   value: string
