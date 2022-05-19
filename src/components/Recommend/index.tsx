@@ -1,24 +1,21 @@
 import { useQuery } from 'react-query'
 import { useRecoilValue } from 'recoil'
-import { settingAtom } from 'recoil/diseaseInfo'
+import { inputValue, settingAtom } from 'recoil/diseaseInfo'
 import { getDiseaseInfoApi } from 'services/diseaseInfo'
 import { Item } from 'types/diseaseInfo'
 import RecommendItem from 'components/Recommend/RecommendItem'
-import styles from './Recommend.module.scss'
 
-interface IProps {
-  value: string
-}
-
-export default function Recommend({ value }: IProps) {
+export default function Recommend() {
   const { sickType, medTp } = useRecoilValue(settingAtom)
+  const inputVal = useRecoilValue(inputValue)
+
   const { data } = useQuery(
-    ['getDiseaseInfoApi', sickType, medTp, value],
+    ['getDiseaseInfoApi', sickType, medTp, inputVal],
     () =>
       getDiseaseInfoApi({
         sickType,
         medTp,
-        searchText: value,
+        searchText: inputVal,
       }).then((res) => {
         if (res.data.response.body.totalCount === 1) {
           const emptyData: Item[] = []

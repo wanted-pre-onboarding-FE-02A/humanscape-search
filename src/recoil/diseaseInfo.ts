@@ -8,3 +8,8 @@ export const settingAtom = atom({
     medTp: 2,
   },
 })
+
+export const inputValue = atom<string>({
+  key: 'inputValue',
+  default: '',
+})

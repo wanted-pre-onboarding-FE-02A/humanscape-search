@@ -4,25 +4,24 @@ import { ChangeEvent } from 'react'
 import Loading from 'components/Loading'
 
 interface IProps {
-  inputVal: string
-  handleClose: () => void
+  handleClick: () => void
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function MobileSearchModal({ inputVal, handleClose, handleChange }: IProps) {
-  const handleSubmit = () => {
-    handleClose()
+export default function MobileSearchModal({ handleClick, handleChange }: IProps) {
+  const handleClose = () => {
+    handleClick()
   }
 
   return (
     <div className={styles.mobileSearch}>
       <div className={styles.searchWrap}>
-        <button type='button' onClick={handleSubmit}>
+        <button type='button' onClick={handleClose}>
           &larr;
         </button>
         <ComponentSearch handleChange={handleChange} />
       </div>
-      <Loading inputVal={inputVal} />
+      <Loading />
     </div>
   )
 }

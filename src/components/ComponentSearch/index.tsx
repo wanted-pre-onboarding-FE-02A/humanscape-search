@@ -1,7 +1,6 @@
 import { SearchIcon } from 'assets/svgs'
 import { ChangeEvent, useEffect, useRef } from 'react'
 import styles from './Search.module.scss'
-import _ from 'lodash'
 
 interface IProps {
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void

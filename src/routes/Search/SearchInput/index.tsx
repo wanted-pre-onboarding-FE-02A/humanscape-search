@@ -1,43 +1,24 @@
-import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { ChangeEvent } from 'react'
 import styles from './SearchInput.module.scss'
 import { SearchIcon } from 'assets/svgs'
-import Modal from 'components/Modal'
-import useOnClickOutside from 'hooks/useOnClickOutside'
 import Search from 'components/ComponentSearch'
 import Loading from 'components/Loading'
-import _ from 'lodash'
-import MobileSearchModal from 'components/MobileSearchModal'
+import { useRecoilValue } from 'recoil'
+import { inputValue } from 'recoil/diseaseInfo'
 
 interface IProps {
-  // inputVal: string
-  // handleChange: (e: ChangeEvent<HTMLInputElement>) => void
-  handleSubmit: (value: string) => (e: FormEvent<HTMLFormElement>) => void
+  handleClick: any
+  handleChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function SearchInput({ /* inputVal,  handleChange, */ handleSubmit }: IProps) {
-  const [isMobileModalOpen, setIsMobileModalOpen] = useState(false)
+export default function SearchInput({ handleClick, handleChange }: IProps) {
+  const inputVal = useRecoilValue(inputValue)
 
-  const ref = useRef(null)
-
-  useOnClickOutside(ref, () => setIsMobileModalOpen(false))
-  const handleClick = () => setIsMobileModalOpen((prev) => !prev)
-
-  const [inputVal, setInputVal] = useState('')
-  const pattern = /^[가-힣a-zA-Z0-9]+$/
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.currentTarget
-    // setInputVal(value)
-    if (pattern.test(value)) {
-      debounceSetInput(value)
-    }
-  }
-  const debounceSetInput = useMemo(() => _.debounce(setInputVal, 1000), [])
   console.log(inputVal)
 
   return (
     <>
-      <form className={styles.form} /* onSubmit={handleSubmit(inputVal)} */>
+      <form className={styles.form}>
         <div className={styles.mobileSearchBtn}>
           <button type='button' onClick={handleClick}>
             <p>질환명을 입력해주세요</p>
@@ -49,13 +30,7 @@ export default function SearchInput({ /* inputVal,  handleChange, */ handleSubmi
           <button type='submit'>검색</button>
         </div>
       </form>
-      <Loading inputVal={inputVal} />
-
-      {isMobileModalOpen && (
-        <Modal>
-          <MobileSearchModal inputVal={inputVal} handleClose={handleClick} handleChange={handleChange} />
-        </Modal>
-      )}
+      <Loading />
     </>
   )
 }
