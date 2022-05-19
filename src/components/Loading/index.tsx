@@ -11,7 +11,7 @@ export default function Loading() {
     <div className={styles.recommendWrap}>
       {inputVal !== '' && (
         <Suspense fallback={<div className={styles.loading}>검색 중...</div>}>
-          <Recommend />
+          <Recommend value={inputVal} />
         </Suspense>
       )}
     </div>

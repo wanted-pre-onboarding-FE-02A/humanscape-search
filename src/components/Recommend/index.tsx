@@ -1,38 +1,29 @@
 import { useQuery } from 'react-query'
 import { useRecoilValue } from 'recoil'
-import { inputValue, settingAtom } from 'recoil/diseaseInfo'
-import { getDiseaseInfoApi } from 'services/diseaseInfo'
+import { settingAtom } from 'recoil/diseaseInfo'
+import { getDiseaseInfoApi } from 'services/diseaseInfo.service'
 import { Item } from 'types/diseaseInfo'
-import RecommendItem from 'components/Recommend/RecommendItem'
+import RecommendItem from './RecommendItem'
 
-export default function Recommend() {
+interface IProps {
+  value: string
+}
+
+export default function Recommend({ value }: IProps) {
   const { sickType, medTp } = useRecoilValue(settingAtom)
-  const inputVal = useRecoilValue(inputValue)
-
-  const { data } = useQuery(
-    ['getDiseaseInfoApi', sickType, medTp, inputVal],
-    () =>
-      getDiseaseInfoApi({
-        sickType,
-        medTp,
-        searchText: inputVal,
-      }).then((res) => {
-        if (res.data.response.body.totalCount === 1) {
-          const emptyData: Item[] = []
-          return emptyData.concat(res.data.response.body.items.item)
-        }
-
-        if (res.data.response.body.totalCount > 1) return res.data.response.body.items.item
-
-        return []
-      }),
+  const { data } = useQuery<Item[]>(
+    ['getDiseaseInfoApi', sickType, medTp, value],
+    () => getDiseaseInfoApi({ searchText: value, medTp, sickType }),
     {
       refetchOnWindowFocus: true,
+      retry: 2,
+      staleTime: 5 * 60 * 1000,
       suspense: true,
     }
   )
 
   if (!data) return null
+  if (data.length === 0) return <div>검색 결과가 없습니다.</div>
   return (
     <ul>
       {data.map((item) => (
