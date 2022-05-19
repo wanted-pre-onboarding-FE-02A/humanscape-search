@@ -8,6 +8,7 @@ import Setting from 'components/Setting/indes'
 
 export default function Search() {
   const [deboVal, setDeboVal] = useState('')
+  const [isMoblie, setIsMoblie] = useState(false)
   const debounceChange = useMemo(
     () =>
       _.debounce((value) => {
@@ -18,10 +19,12 @@ export default function Search() {
     []
   )
 
+  const handleClick = () => setIsMoblie((prev) => !prev)
+
   return (
     <>
       <Setting />
-      <SearchInput debounceChange={debounceChange} />
+      <SearchInput isMoblie={isMoblie} debounceChange={debounceChange} handleClick={handleClick} />
       {deboVal !== '' && (
         <div className={styles.recommend}>
           <Suspense fallback={<div className={styles.loading}>검색 중...</div>}>
