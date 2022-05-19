@@ -1,7 +1,44 @@
 @use '/src/styles/constants/colors';
+@use '/src/styles/mixins/responsive';
 
 .app {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  padding: 0 30px;
+  background-color: colors.$HUMANS_BG;
+
+  .title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 80px;
+    font-weight: bolder;
+
+    h1 {
+      padding: 10px 0;
+      font-size: 34px;
+      line-height: 50px;
+      text-align: center;
+    }
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@include responsive.mobileOnly {
+  .app {
+    .title {
+      h1 {
+        font-size: 25px;
+        line-height: 40px;
+      }
+    }
+  }
 }
