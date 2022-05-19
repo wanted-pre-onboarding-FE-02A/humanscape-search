@@ -1,17 +1,20 @@
 import { useQuery } from 'react-query'
-import { useRecoilValue } from 'recoil'
-import { settingAtom } from 'recoil/diseaseInfo'
+import { useRecoilValue, useRecoilState } from 'recoil'
+import { settingAtom, dataLengthAtom } from 'recoil/diseaseInfo'
 import { getDiseaseInfoApi } from 'services/diseaseInfo.service'
 import { Item } from 'types/diseaseInfo'
 import RecommendItem from './RecommendItem'
 
 interface IProps {
   value: string
+  setInputVal: (inputVal: string) => void
 }
 
-export default function Recommend({ value }: IProps) {
+export default function Recommend({ value, setInputVal }: IProps) {
   const { sickType, medTp } = useRecoilValue(settingAtom)
-  const { data } = useQuery<Item[]>(
+  const [, setLength] = useRecoilState(dataLengthAtom)
+
+  const { data } = useQuery(
     ['getDiseaseInfoApi', sickType, medTp, value],
     () => getDiseaseInfoApi({ searchText: value, medTp, sickType }),
     {
@@ -19,6 +22,9 @@ export default function Recommend({ value }: IProps) {
       retry: 2,
       staleTime: 5 * 60 * 1000,
       suspense: true,
+      onSuccess: (res) => {
+        setLength(res.length)
+      },
     }
   )
 
@@ -26,8 +32,8 @@ export default function Recommend({ value }: IProps) {
   if (data.length === 0) return <div>검색 결과가 없습니다.</div>
   return (
     <ul>
-      {data.map((item) => (
-        <RecommendItem key={item.sickCd} item={item} />
+      {data.map((item, index: number) => (
+        <RecommendItem key={item.sickCd} item={item} index={index} setInputVal={setInputVal} />
       ))}
     </ul>
   )

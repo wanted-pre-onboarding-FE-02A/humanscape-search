@@ -25,7 +25,7 @@ export default function Search() {
       {inputVal !== '' && (
         <div className={styles.recommend}>
           <Suspense fallback={<div className={styles.loading}>검색 중...</div>}>
-            <Recommend value={inputVal} />
+            <Recommend value={inputVal} setInputVal={setInputVal} />
           </Suspense>
         </div>
       )}
