@@ -18,23 +18,18 @@ interface IProps {
 export default function RecommendItem({ item, index }: IProps) {
   const [checked, setChecked] = useState(false)
   const [focusedIdx, setFocusedIdx] = useRecoilState(focusedIdxAtom)
-  // const debounceItemTitle = _.debounce(() => {
-  //   setInputVal(item.sickNm)
-  // }, 2000)
 
   // 키보드 이동으로 검색창 반영
   useEffect(() => {
+    console.log(focusedIdx, index)
     if (focusedIdx === index) {
       setChecked(true)
       setFocusedIdx(index)
-      // setInputVal(item.sickNm)
-      // debounceItemTitle()
     } else setChecked(false)
   }, [focusedIdx, index, item.sickNm, setFocusedIdx])
 
   // 클릭으로 검색창 반영
   const handleItemChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // setInputVal(e.currentTarget.value)
     setFocusedIdx(index)
   }
 

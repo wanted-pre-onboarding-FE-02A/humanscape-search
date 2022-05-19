@@ -29,25 +29,26 @@ export default function SearchInput({ isMoblie, debounceChange, handleClick }: I
   }
 
   const handleKeyControl = (e: React.KeyboardEvent) => {
-    switch (e.key) {
-      case 'ArrowDown':
-        if (focusedIdx >= length - 1) {
-          setFocusedIdx(0)
-          return
-        }
-        setFocusedIdx(focusedIdx + 1)
-        break
-      case 'ArrowUp':
-        if (focusedIdx <= 0) {
-          setFocusedIdx(length - 1)
-          return
-        }
-        setFocusedIdx(focusedIdx - 1)
-        break
+    if (!e.nativeEvent.isComposing) {
+      switch (e.key) {
+        case 'ArrowDown':
+          if (focusedIdx >= length - 1) {
+            setFocusedIdx(0)
+            return
+          }
+          setFocusedIdx(focusedIdx + 1)
+          break
+        case 'ArrowUp':
+          if (focusedIdx <= 0) {
+            setFocusedIdx(length - 1)
+            return
+          }
+          setFocusedIdx(focusedIdx - 1)
+          break
+      }
     }
   }
 
-  console.log(isMoblie)
   return (
     <form className={cx(styles.form, { [styles.mobile]: isMoblie })}>
       <button type='button' onClick={handleClick}>
@@ -60,7 +61,7 @@ export default function SearchInput({ isMoblie, debounceChange, handleClick }: I
             type='search'
             placeholder='질환명을 입력해 주세요.'
             ref={inputRef}
-            value={inputVal}
+            // value={inputVal}
             onChange={handleChange}
             onKeyDown={handleKeyControl}
           />
