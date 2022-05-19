@@ -1,31 +1,34 @@
-import { ChangeEvent, Suspense, useMemo, useState } from 'react'
+import { Suspense, useMemo, useState } from 'react'
+import _ from 'lodash'
 import styles from './Search.module.scss'
 
 import SearchInput from './SearchInput'
 import Recommend from './Recommend'
 import Setting from 'components/Setting/indes'
-import _ from 'lodash'
 
-// const pattern = /^[가-힣a-zA-Z0-9]+$/
-// if (pattern.test(value) && value.length !== 0) {
-// }
 export default function Search() {
-  const [inputVal, setInputVal] = useState('')
+  const [deboVal, setDeboVal] = useState('')
+  const [isMoblie, setIsMoblie] = useState(false)
+  const debounceChange = useMemo(
+    () =>
+      _.debounce((value) => {
+        const pattern = /[가-힣]+$/
+        if (pattern.test(value)) setDeboVal(value)
+        if (value === '') setDeboVal('')
+      }, 1000),
+    []
+  )
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.currentTarget
-    debounceSetInput(value)
-  }
-  const debounceSetInput = useMemo(() => _.debounce(setInputVal, 1000), [])
+  const handleClick = () => setIsMoblie((prev) => !prev)
 
   return (
     <>
       <Setting />
-      <SearchInput handleChange={handleChange} />
-      {inputVal !== '' && (
+      <SearchInput isMoblie={isMoblie} debounceChange={debounceChange} handleClick={handleClick} />
+      {deboVal !== '' && (
         <div className={styles.recommend}>
           <Suspense fallback={<div className={styles.loading}>검색 중...</div>}>
-            <Recommend value={inputVal} setInputVal={setInputVal} />
+            <Recommend value={deboVal} />
           </Suspense>
         </div>
       )}
