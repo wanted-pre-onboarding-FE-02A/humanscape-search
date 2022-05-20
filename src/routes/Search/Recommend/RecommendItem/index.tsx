@@ -5,8 +5,6 @@ import { useRecoilState } from 'recoil'
 import { focusedIdxAtom } from 'recoil/diseaseInfo'
 import _ from 'lodash'
 
-import HighlightedText from '../../../../components/HighlightedText'
-
 interface IData {
   sickCd: string
   sickNm: string
@@ -15,10 +13,10 @@ interface IData {
 interface IProps {
   item: IData
   index: number
-  setInputValue: (inputVal: string) => void
+  setInputVal: (inputVal: string) => void
 }
 
-export default function RecommendItem({ item, index, setInputValue }: IProps) {
+export default function RecommendItem({ item, index, setInputVal }: IProps) {
   const [checked, setChecked] = useState(false)
   const [focusedIdx, setFocusedIdx] = useRecoilState(focusedIdxAtom)
   // const debounceItemTitle = _.debounce(() => {
@@ -33,7 +31,7 @@ export default function RecommendItem({ item, index, setInputValue }: IProps) {
       // setInputVal(item.sickNm)
       // debounceItemTitle()
     } else setChecked(false)
-  }, [focusedIdx, index, setInputValue, item.sickNm, setFocusedIdx])
+  }, [focusedIdx, index, setInputVal, item.sickNm, setFocusedIdx])
 
   // 클릭으로 검색창 반영
   const handleItemChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +51,7 @@ export default function RecommendItem({ item, index, setInputValue }: IProps) {
         />
         <div className={styles.itemCard}>
           <SearchIcon />
-          <HighlightedText item={item} />
+          <p>{item.sickNm}</p>
         </div>
       </label>
     </li>

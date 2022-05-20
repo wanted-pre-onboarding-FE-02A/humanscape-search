@@ -1,8 +1,8 @@
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import styles from './SearchInput.module.scss'
 import { SearchIcon } from 'assets/svgs'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { dataLengthAtom, focusedIdxAtom, inputValue } from 'recoil/diseaseInfo'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { dataLengthAtom, focusedIdxAtom } from 'recoil/diseaseInfo'
 import { cx } from 'styles'
 
 interface IProps {
@@ -16,7 +16,6 @@ export default function SearchInput({ isMoblie, debounceChange, handleClick }: I
   const inputRef = useRef<HTMLInputElement>(null)
   const length = useRecoilValue(dataLengthAtom)
   const [focusedIdx, setFocusedIdx] = useRecoilState(focusedIdxAtom)
-  const setInputValue = useSetRecoilState(inputValue)
 
   useEffect(() => {
     if (!inputRef.current) return
@@ -27,7 +26,6 @@ export default function SearchInput({ isMoblie, debounceChange, handleClick }: I
     const { value } = e.currentTarget
     setInputVal(value)
     debounceChange(value)
-    setInputValue(value)
   }
 
   const handleKeyControl = (e: React.KeyboardEvent) => {

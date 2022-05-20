@@ -18,8 +18,3 @@ export const focusedIdxAtom = atom({
   key: 'focusedIndex',
   default: -1,
 })
-
-export const inputValue = atom({
-  key: 'inputValue',
-  default: '',
-})
