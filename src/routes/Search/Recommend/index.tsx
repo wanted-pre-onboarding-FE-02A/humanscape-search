@@ -3,7 +3,7 @@ import { useRecoilValue, useRecoilState } from 'recoil'
 import { settingAtom, dataLengthAtom } from 'recoil/diseaseInfo'
 import { getDiseaseInfoApi } from 'services/diseaseInfo.service'
 import { Item } from 'types/diseaseInfo'
-import { createFuzzyMatcher, getDistance } from 'utils/string'
+import { createFuzzyMatcher, getDistance, getHighlightStr } from 'utils/string'
 import RecommendItem from './RecommendItem'
 
 interface IProps {
@@ -16,7 +16,17 @@ export default function Recommend({ value }: IProps) {
 
   const { data } = useQuery(
     ['getDiseaseInfoApi', sickType, medTp, value],
-    () => getDiseaseInfoApi({ searchText: value, medTp, sickType }),
+    () =>
+      getDiseaseInfoApi({ searchText: value, medTp, sickType }).then((res) => {
+        const regex = createFuzzyMatcher(value)
+        const tmp = res?.map((item) => ({
+          ...item,
+          // sickNm: getHighlightStr(regex, item.sickNm),
+          distance: getDistance(regex, item.sickNm),
+        }))
+
+        return tmp
+      }),
     {
       refetchOnWindowFocus: true,
       retry: 2,

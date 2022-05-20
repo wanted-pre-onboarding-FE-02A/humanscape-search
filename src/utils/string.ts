@@ -43,12 +43,11 @@ const highlight = (input: string, match: string) => {
   return highlighted.join('')
 }
 
-export const getHighlightStr = _.curry((regex: RegExp, str: string) =>
+export const getHighlightStr = (regex: RegExp, str: string) =>
   str.replace(regex, (match, ...groups) => {
     const input = groups.slice(0, -2).join('')
     return highlight(input, match)
   })
-)
 
 /* 문자 사이의 거리와 첫 인덱스부터 문자 거리 */
 
@@ -67,7 +66,7 @@ const getDistanceBetweenLetters = (input: string, match: string) => {
   return longestDistance
 }
 
-export const getDistance = _.curry((regex: RegExp, str: string) => {
+export const getDistance = (regex: RegExp, str: string) => {
   const result = str.match(regex)
   if (!result) return null
 
@@ -76,7 +75,7 @@ export const getDistance = _.curry((regex: RegExp, str: string) => {
   const between = getDistanceBetweenLetters(input, matchStr)
   const offset = result.index || 0 // str에서 일치하는 문자열 첫 인덱스
   return { between, offset }
-})
+}
 
 // const testData = ['간간간척추', '척척척추추추', '척추', '척간간추', '척추나라', '척무추']
 
