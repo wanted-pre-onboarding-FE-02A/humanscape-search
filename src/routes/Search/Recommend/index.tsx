@@ -3,7 +3,7 @@ import { useRecoilValue, useRecoilState } from 'recoil'
 import { settingAtom, dataLengthAtom } from 'recoil/diseaseInfo'
 import { getDiseaseInfoApi } from 'services/diseaseInfo.service'
 import { Item } from 'types/diseaseInfo'
-import { createFuzzyMatcher, getDistance, getHighlightStr } from 'utils/string'
+import { createFuzzyMatcher, getDistance } from 'utils/string'
 import RecommendItem from './RecommendItem'
 
 interface IProps {

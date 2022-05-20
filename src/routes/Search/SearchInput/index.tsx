@@ -62,8 +62,9 @@ export default function SearchInput({ debounceChange, handleOpen }: IProps) {
         />
         <button type='submit'>검색</button>
       </div>
+
       <button type='button' className={styles.activeMobile} onClick={handleOpen}>
-        <p>질환명을 입력해주세요</p>
+        <p>{inputVal || '질환명을 입력해주세요'}</p>
         <SearchIcon />
       </button>
     </form>

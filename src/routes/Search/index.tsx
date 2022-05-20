@@ -31,7 +31,7 @@ export default function Search() {
       {isMoblie && (
         <MobileModal>
           <ModalInput debounceChange={debounceChange} handleClose={handleClick} />
-          <RecommendWrap value={deboVal} />
+          <RecommendWrap isMoblie={isMoblie} value={deboVal} />
         </MobileModal>
       )}
     </>

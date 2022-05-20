@@ -14,7 +14,12 @@
 }
 @include responsive.mobileOnly {
   .wrapper {
+    display: none;
     width: 100%;
     margin-top: 0;
+  }
+
+  .modal {
+    display: block;
   }
 }

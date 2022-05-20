@@ -1,4 +1,4 @@
-import { ReactFragment, useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useRecoilValue } from 'recoil'
 import { inputValueAtom } from 'recoil/diseaseInfo'
 
@@ -12,25 +12,19 @@ interface IData {
 }
 
 function HighlightedText({ item }: IProp) {
-  const highlight = useRecoilValue(inputValueAtom)
+  const inputVal = useRecoilValue(inputValueAtom)
 
-  const regex = useMemo(() => {
-    return new RegExp(`(${highlight})`, 'gi')
-  }, [highlight])
+  const renderContent = useMemo(() => {
+    const regex = new RegExp(`(${inputVal})`, 'gi')
+    const regexParts = item.sickNm.split(regex)
 
-  const parts = item.sickNm.split(regex)
+    return regexParts.filter(String).map((part, i) => {
+      const key = `splitedText-${i}`
+      return regex.test(part) ? <mark key={key}>{part}</mark> : <span key={key}>{part}</span>
+    })
+  }, [inputVal, item.sickNm])
 
-  const renderText = useCallback(
-    (arr: string[]): ReactFragment => {
-      return arr.filter(String).map((part, i) => {
-        const key = `splitedText-${i}`
-        return regex.test(part) ? <mark key={key}>{part}</mark> : <span key={key}>{part}</span>
-      })
-    },
-    [regex]
-  )
-
-  return <span>{renderText(parts)}</span>
+  return <span>{renderContent}</span>
 }
 
 export default HighlightedText
