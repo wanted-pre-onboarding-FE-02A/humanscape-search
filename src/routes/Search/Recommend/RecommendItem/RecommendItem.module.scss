@@ -1,5 +1,9 @@
 @use '/src/styles/constants/colors';
 
+label {
+  display: flex;
+}
+
 input[type='radio']:checked + .itemCard {
   background-color: colors.$GRAYE;
 }

@@ -2,8 +2,7 @@ import styles from './RecommendItem.module.scss'
 import { SearchIcon } from 'assets/svgs'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
-import { focusedIdxAtom } from 'recoil/diseaseInfo'
-import _ from 'lodash'
+import { focusedIdxAtom, inputValueAtom } from 'recoil/diseaseInfo'
 
 interface IData {
   sickCd: string
@@ -13,30 +12,26 @@ interface IData {
 interface IProps {
   item: IData
   index: number
-  setInputVal: (inputVal: string) => void
 }
 
-export default function RecommendItem({ item, index, setInputVal }: IProps) {
+export default function RecommendItem({ item, index }: IProps) {
   const [checked, setChecked] = useState(false)
   const [focusedIdx, setFocusedIdx] = useRecoilState(focusedIdxAtom)
-  // const debounceItemTitle = _.debounce(() => {
-  //   setInputVal(item.sickNm)
-  // }, 2000)
+  const [, setInputVal] = useRecoilState(inputValueAtom)
 
   // 키보드 이동으로 검색창 반영
   useEffect(() => {
     if (focusedIdx === index) {
       setChecked(true)
       setFocusedIdx(index)
-      // setInputVal(item.sickNm)
-      // debounceItemTitle()
+      setInputVal(item.sickNm)
     } else setChecked(false)
-  }, [focusedIdx, index, setInputVal, item.sickNm, setFocusedIdx])
+  }, [focusedIdx, index, item.sickNm, setFocusedIdx])
 
   // 클릭으로 검색창 반영
   const handleItemChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // setInputVal(e.currentTarget.value)
     setFocusedIdx(index)
+    setInputVal(e.target.value)
   }
 
   return (

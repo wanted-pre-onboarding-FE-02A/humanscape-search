@@ -2,7 +2,7 @@ import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } fr
 import styles from './SearchInput.module.scss'
 import { SearchIcon } from 'assets/svgs'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { dataLengthAtom, focusedIdxAtom } from 'recoil/diseaseInfo'
+import { dataLengthAtom, focusedIdxAtom, inputValueAtom } from 'recoil/diseaseInfo'
 import { cx } from 'styles'
 
 interface IProps {
@@ -12,10 +12,11 @@ interface IProps {
 }
 
 export default function SearchInput({ isMoblie, debounceChange, handleClick }: IProps) {
-  const [inputVal, setInputVal] = useState('')
+  // const [inputVal, setInputVal] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const length = useRecoilValue(dataLengthAtom)
   const [focusedIdx, setFocusedIdx] = useRecoilState(focusedIdxAtom)
+  const [inputVal, setInputVal] = useRecoilState(inputValueAtom)
 
   useEffect(() => {
     if (!inputRef.current) return
@@ -29,25 +30,26 @@ export default function SearchInput({ isMoblie, debounceChange, handleClick }: I
   }
 
   const handleKeyControl = (e: React.KeyboardEvent) => {
-    switch (e.key) {
-      case 'ArrowDown':
-        if (focusedIdx >= length - 1) {
-          setFocusedIdx(0)
-          return
-        }
-        setFocusedIdx(focusedIdx + 1)
-        break
-      case 'ArrowUp':
-        if (focusedIdx <= 0) {
-          setFocusedIdx(length - 1)
-          return
-        }
-        setFocusedIdx(focusedIdx - 1)
-        break
+    if (!e.nativeEvent.isComposing) {
+      switch (e.key) {
+        case 'ArrowDown':
+          if (focusedIdx >= length - 1) {
+            setFocusedIdx(0)
+            return
+          }
+          setFocusedIdx(focusedIdx + 1)
+          break
+        case 'ArrowUp':
+          if (focusedIdx <= 0) {
+            setFocusedIdx(length - 1)
+            return
+          }
+          setFocusedIdx(focusedIdx - 1)
+          break
+      }
     }
   }
 
-  console.log(isMoblie)
   return (
     <form className={cx(styles.form, { [styles.mobile]: isMoblie })}>
       <button type='button' onClick={handleClick}>

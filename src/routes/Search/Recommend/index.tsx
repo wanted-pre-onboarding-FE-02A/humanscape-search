@@ -8,10 +8,9 @@ import RecommendItem from './RecommendItem'
 
 interface IProps {
   value: string
-  setInputVal: (inputVal: string) => void
 }
 
-export default function Recommend({ value, setInputVal }: IProps) {
+export default function Recommend({ value }: IProps) {
   const { sickType, medTp } = useRecoilValue(settingAtom)
   const [, setLength] = useRecoilState(dataLengthAtom)
 
@@ -68,7 +67,7 @@ export default function Recommend({ value, setInputVal }: IProps) {
   return (
     <ul>
       {data.map((item, index: number) => (
-        <RecommendItem key={item.sickCd} item={item} index={index} setInputVal={setInputVal} />
+        <RecommendItem key={item.sickCd} item={item} index={index} />
       ))}
     </ul>
   )
