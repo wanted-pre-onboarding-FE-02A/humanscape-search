@@ -1,8 +1,7 @@
 @use '/src/styles/constants/colors';
 
 .app {
-  position: relative;
-  width: 100vmax;
+  width: 100%;
   height: 100vh;
   background-color: colors.$HUMANS_BG;
 

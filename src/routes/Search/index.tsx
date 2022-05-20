@@ -5,6 +5,7 @@ import styles from './Search.module.scss'
 import SearchInput from './SearchInput'
 import Recommend from './Recommend'
 import Setting from 'components/Setting/indes'
+import Portal from 'components/Portal'
 
 export default function Search() {
   const [deboVal, setDeboVal] = useState('')
@@ -12,7 +13,7 @@ export default function Search() {
   const debounceChange = useMemo(
     () =>
       _.debounce((value) => {
-        const pattern = /[가-힣]+$/
+        const pattern = /^[가-힣a-zA-Z0-9]+$/
         if (pattern.test(value)) setDeboVal(value)
         if (value === '') setDeboVal('')
       }, 1000),

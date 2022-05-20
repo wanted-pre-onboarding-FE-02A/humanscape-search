@@ -52,22 +52,25 @@ export default function SearchInput({ isMoblie, debounceChange, handleClick }: I
 
   return (
     <form className={cx(styles.form, { [styles.mobile]: isMoblie })}>
-      <button type='button' onClick={handleClick}>
-        모바일버튼
-      </button>
-      <div className={styles.searchWrap}>
-        <div className={styles.searchBox}>
-          <SearchIcon />
-          <input
-            type='search'
-            placeholder='질환명을 입력해 주세요.'
-            ref={inputRef}
-            value={inputVal}
-            onChange={handleChange}
-            onKeyDown={handleKeyControl}
+      <div className={styles.searchBox}>
+        {!isMoblie && <SearchIcon />}
+        <input
+          type='search'
+          placeholder='질환명을 입력해 주세요.'
+          ref={inputRef}
+          value={inputVal}
+          onChange={handleChange}
+          onKeyDown={handleKeyControl}
+        />
+        <button type='submit'>검색</button>
+        {!isMoblie && (
+          <button
+            type='button'
+            className={styles.activeMobile}
+            onClick={handleClick}
+            aria-label='모바일용 input 활성화버튼'
           />
-          <button type='submit'>검색</button>
-        </div>
+        )}
       </div>
     </form>
   )

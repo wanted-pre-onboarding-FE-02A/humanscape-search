@@ -1,9 +1,15 @@
 @use '/src/styles/constants/colors';
 @use '/src/styles/mixins/flexbox';
 @use '/src/styles/mixins/responsive';
+@use '/src/styles/mixins/position';
 
 .form {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
   .searchBox {
+    position: relative;
     display: flex;
     align-items: center;
     width: 600px;
@@ -12,6 +18,11 @@
     overflow: hidden;
     background-color: colors.$WHITE;
     border-radius: 30px;
+
+    @include responsive.mobileOnly {
+      width: 80%;
+      height: 50px;
+    }
 
     svg {
       width: 30px;
@@ -38,11 +49,32 @@
       color: colors.$WHITE;
       background-color: colors.$BLUE;
     }
+
+    .activeMobile {
+      @include position.absolute(0 auto auto 0);
+      display: none;
+      width: 100%;
+      height: 100%;
+      background-color: colors.$BLUE;
+
+      @include responsive.mobileOnly {
+        display: block;
+      }
+    }
   }
 
   @include responsive.mobileOnly {
     &.mobile {
-      background-color: blue;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #bcbcbc;
+
+      .searchBox {
+        width: 100%;
+        border-radius: 0;
+      }
     }
   }
 }
