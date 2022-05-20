@@ -61,13 +61,11 @@ export default function SearchInput({ debounceChange, handleOpen }: IProps) {
           onKeyDown={handleKeyControl}
         />
         <button type='submit'>검색</button>
-        <button
-          type='button'
-          className={styles.activeMobile}
-          onClick={handleOpen}
-          aria-label='모바일 모달 활성화버튼'
-        />
       </div>
+      <button type='button' className={styles.activeMobile} onClick={handleOpen}>
+        <p>질환명을 입력해주세요</p>
+        <SearchIcon />
+      </button>
     </form>
   )
 }

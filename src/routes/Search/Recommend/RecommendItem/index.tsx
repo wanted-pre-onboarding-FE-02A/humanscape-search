@@ -3,6 +3,7 @@ import { SearchIcon } from 'assets/svgs'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { focusedIdxAtom, inputValueAtom } from 'recoil/diseaseInfo'
+import HighlightedText from 'components/HighlightedText'
 
 interface IData {
   sickCd: string
@@ -26,7 +27,7 @@ export default function RecommendItem({ item, index }: IProps) {
       setFocusedIdx(index)
       setInputVal(item.sickNm)
     } else setChecked(false)
-  }, [focusedIdx, index, item.sickNm, setFocusedIdx])
+  }, [focusedIdx, index, item.sickNm, setFocusedIdx, setInputVal])
 
   // 클릭으로 검색창 반영
   const handleItemChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +47,7 @@ export default function RecommendItem({ item, index }: IProps) {
         />
         <div className={styles.itemCard}>
           <SearchIcon />
-          <p>{item.sickNm}</p>
+          <HighlightedText item={item} />
         </div>
       </label>
     </li>
