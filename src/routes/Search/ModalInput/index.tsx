@@ -1,15 +1,16 @@
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
-import styles from './SearchInput.module.scss'
-import { SearchIcon } from 'assets/svgs'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { dataLengthAtom, focusedIdxAtom, inputValueAtom } from 'recoil/diseaseInfo'
 
+import styles from './ModalInput.module.scss'
+import { SearchIcon, ArrowIcon } from 'assets/svgs'
+
 interface IProps {
   debounceChange: _.DebouncedFunc<Dispatch<SetStateAction<string>>>
-  handleOpen: () => void
+  handleClose: () => void
 }
 
-export default function SearchInput({ debounceChange, handleOpen }: IProps) {
+export default function ModalInput({ debounceChange, handleClose }: IProps) {
   // const [inputVal, setInputVal] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const length = useRecoilValue(dataLengthAtom)
@@ -51,7 +52,9 @@ export default function SearchInput({ debounceChange, handleOpen }: IProps) {
   return (
     <form className={styles.form}>
       <div className={styles.searchBox}>
-        <SearchIcon />
+        <button type='button' onClick={handleClose}>
+          <ArrowIcon className={styles.icon} />
+        </button>
         <input
           type='search'
           placeholder='질환명을 입력해 주세요.'
@@ -60,13 +63,9 @@ export default function SearchInput({ debounceChange, handleOpen }: IProps) {
           onChange={handleChange}
           onKeyDown={handleKeyControl}
         />
-        <button type='submit'>검색</button>
-        <button
-          type='button'
-          className={styles.activeMobile}
-          onClick={handleOpen}
-          aria-label='모바일 모달 활성화버튼'
-        />
+        <button type='submit'>
+          <SearchIcon className={styles.icon} />
+        </button>
       </div>
     </form>
   )

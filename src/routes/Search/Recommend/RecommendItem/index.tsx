@@ -35,7 +35,7 @@ export default function RecommendItem({ item, index }: IProps) {
   }
 
   return (
-    <li>
+    <li className={styles.wrapper}>
       <label>
         <input
           type='radio'

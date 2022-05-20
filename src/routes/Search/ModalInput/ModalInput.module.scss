@@ -12,19 +12,14 @@
     position: relative;
     display: flex;
     align-items: center;
-    width: 600px;
+    width: 100%;
     height: 60px;
     padding-left: 15px;
     overflow: hidden;
     background-color: colors.$WHITE;
-    border-radius: 30px;
+    border-bottom: 1.5px solid colors.$BLUE;
 
-    @include responsive.mobileOnly {
-      width: 80%;
-      height: 50px;
-    }
-
-    svg {
+    .icon {
       width: 30px;
       height: 30px;
     }
@@ -40,26 +35,8 @@
       }
     }
 
-    button[type='submit'] {
+    button {
       @include flexbox.flexbox(center, center);
-      width: 100px;
-      height: 60px;
-      font-size: 18px;
-      font-weight: 700;
-      color: colors.$WHITE;
-      background-color: colors.$BLUE;
-    }
-
-    .activeMobile {
-      @include position.absolute(0 auto auto 0);
-      display: none;
-      width: 100%;
-      height: 100%;
-      background-color: colors.$BLUE;
-
-      @include responsive.mobileOnly {
-        display: block;
-      }
     }
   }
 }
