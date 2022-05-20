@@ -9,6 +9,7 @@ import Setting from 'components/Setting/indes'
 export default function Search() {
   const [deboVal, setDeboVal] = useState('')
   const [isMoblie, setIsMoblie] = useState(false)
+
   const debounceChange = useMemo(
     () =>
       _.debounce((value) => {

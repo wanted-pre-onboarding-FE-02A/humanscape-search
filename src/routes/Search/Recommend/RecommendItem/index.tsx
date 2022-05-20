@@ -1,3 +1,5 @@
+import HighlightedText from 'components/HighlightedText'
+
 import styles from './RecommendItem.module.scss'
 import { SearchIcon } from 'assets/svgs'
 import { ChangeEvent, useEffect, useState } from 'react'
@@ -26,7 +28,7 @@ export default function RecommendItem({ item, index }: IProps) {
       setFocusedIdx(index)
       setInputVal(item.sickNm)
     } else setChecked(false)
-  }, [focusedIdx, index, item.sickNm, setFocusedIdx])
+  }, [focusedIdx, index, item.sickNm, setFocusedIdx, setInputVal])
 
   // 클릭으로 검색창 반영
   const handleItemChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +48,7 @@ export default function RecommendItem({ item, index }: IProps) {
         />
         <div className={styles.itemCard}>
           <SearchIcon />
-          <p>{item.sickNm}</p>
+          <HighlightedText item={item} />
         </div>
       </label>
     </li>
